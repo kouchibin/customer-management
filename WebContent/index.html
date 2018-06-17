@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Customer Management System</title>
+<style type="text/css">
+body
+{
+margin: 0;
+padding: 0;
+}
+div
+{
+position: absolute;
+width: 100%;
+height: 100%;
+}
+#header
+{
+width: 100%;
+height: 100px;
+}
+#navigator
+{
+width: 15%;
+float: left;
+height: 100%;
+}
+#content
+{
+width: 85%;
+height: 100%;
+float: right;
+}
+</style>
+</head>
+<body>
+<div>
+    <iframe id="header" frameborder="1" src="header.html"></iframe>
+    <div id="navigator" name="navigator" border="1">
+	    <ul>
+			<li><a href="add.html" target="content">Add</a></li>
+			<li><a href="showall.html" target="content">Show All</a></li>
+			<li><a href="search.html" target="content">Search</a></li>
+			<li><a href="intro.html" target="content">About</a></li>
+		</ul>
+    </div>
+    
+    <iframe id="content" name="content" frameborder="0" src="intro.html"></iframe>
+</div>
+</body>
+</html>

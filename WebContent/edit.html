@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(function() {
+
+    var url = window.location.href;
+    var id = url.split("=")[1];
+    var target = "/customer-management/CustomerServlet/" + id;
+    $.get(target, function(data, status){
+        if (data["message"] != undefined){
+            alert("An error occured.")
+        } else {
+            $("#name").val(data.name);
+            if (data.gender == "male"){
+                $("#male").prop( "checked", true );
+            } else {
+                $("#female").prop( "checked", true );
+            }
+            $("#phone").val(data.phone);
+            $("#email").val(data.email);
+            $("#description").val(data.description);
+        }
+    });
+    
+	$("form").submit(function(e){
+        e.preventDefault();
+        var frm = $("form");
+        var dat = frm.serializeArray();
+        var customer = {};
+        $.each(dat, function(i, item){
+            customer[item.name] = item.value;
+        });
+        
+        $.ajax({
+            url: target,
+            type: "PUT",
+            data: JSON.stringify(customer),
+            contentType: "application/json"
+        }).done(function(json){
+            if (json.status == "ok")
+                alert("Update successfully.");
+            else
+                alert("Update fail.");
+        }).fail(function(xhr, status, errorThrown){
+            alert("Update fail.");
+            console.log( "Error: " + errorThrown );
+            console.log( "Status: " + status );
+            console.dir( xhr );
+        });
+    });
+	
+});
+   
+</script>
+</head>
+<body>
+<h3 align="center">Edit customer information.</h3>
+<form>
+    <table border="0" align="center" width="40%" style="margin-left: 100px">
+        <tr>
+            <td width="100px">Name</td>
+            <td width="40%">
+                <input id="name" type="text" name="name"/>
+            </td>
+            <td align="left">
+                <label id="nameError" class="error">&nbsp;</label>
+            </td>
+        </tr>
+        <tr>
+            <td>Gender</td>
+            <td>
+                <input type="radio" name="gender" value="male" id="male"/>
+                <label for="male">Male</label>
+                <input type="radio" name="gender" value="female" id="female"/>
+                <label for="female">Female</label>
+            </td>
+            <td>
+                <label id="genderError" class="error">&nbsp;</label>
+            </td>
+        </tr>
+        <tr>
+            <td>Cellphone</td>
+            <td>
+                <input type="text" name="phone" id="phone"/>
+            </td>
+            <td>
+                <label id="phoneError" class="error">&nbsp;</label>
+            </td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>
+                <input type="text" name="email" id="email"/>
+            </td>
+            <td>
+                <label id="emailError" class="error">&nbsp;</label>
+            </td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>
+                <textarea id="description" rows="5" cols="30" name="description"></textarea>
+            </td>
+            <td>
+                <label id="descriptionError" class="error">&nbsp;</label>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="edit"/>
+                <input type="reset" value="reset"/>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

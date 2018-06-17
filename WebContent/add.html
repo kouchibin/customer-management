@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="http://www.json.org/json2.js"></script> -->
+<script>
+$(function() {
+	$("form").submit(function(e){
+		e.preventDefault();
+		var frm = $("form");
+	    var dat = frm.serializeArray();
+	    var obj = {}
+	    $.each(dat, function(i, item){
+	    	obj[item.name] = item.value;
+	    });
+	    $.post(
+	      "/customer-management/CustomerServlet",
+	      JSON.stringify(obj),
+	      function(data, status) {
+	    	if (data.status == "ok")
+	            alert("Customer has been added.");
+	    	else
+	    		alert("Add customer failed.")
+	      }
+	    );
+	  });
+});
+   
+</script>
+</head>
+<body>
+<h3 align="center">Add a new customer</h3>
+<form>
+    <table border="0" align="center" width="40%" style="margin-left: 100px">
+        <tr>
+            <td width="100px">Name</td>
+            <td width="40%">
+                <input type="text" name="name"/>
+            </td>
+            <td align="left">
+                <label id="nameError" class="error">&nbsp;</label>
+            </td>
+        </tr>
+        <tr>
+            <td>Gender</td>
+            <td>
+                <input type="radio" name="gender" value="male" id="male"/>
+                <label for="male">Male</label>
+                <input type="radio" name="gender" value="female" id="female"/>
+                <label for="female">Female</label>
+            </td>
+            <td>
+                <label id="genderError" class="error">&nbsp;</label>
+            </td>
+        </tr>
+        <tr>
+            <td>Cellphone</td>
+            <td>
+                <input type="text" name="phone" id="phone"/>
+            </td>
+            <td>
+                <label id="phoneError" class="error">&nbsp;</label>
+            </td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>
+                <input type="text" name="email" id="email"/>
+            </td>
+            <td>
+                <label id="emailError" class="error">&nbsp;</label>
+            </td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>
+                <textarea rows="5" cols="30" name="description"></textarea>
+            </td>
+            <td>
+                <label id="descriptionError" class="error">&nbsp;</label>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" name="submit"/>
+                <input type="reset" name="reset"/>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

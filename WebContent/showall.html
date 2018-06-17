@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$.get("/customer-management/CustomerServlet",
+		   function(data, status){
+		$.each(data, function(i, item){
+			var tr = $("<tr></tr>");
+			tr.append($("<td>" + item.name + "</td>"));
+			tr.append($("<td>" + item.gender + "</td>"));
+			tr.append($("<td>" + item.phone + "</td>"));
+			tr.append($("<td>" + item.email + "</td>"));
+			tr.append($("<td>" + item.description + "</td>"));
+			tr.append($("<td><a href=\"edit.html?id=" + item.id + "\">Edit</a> " +
+				       " <button id=\"" + item.id + "\" onclick=\"del(this);\">Delete</button></td>"));
+			$("table").append(tr);
+			
+		});
+	});
+	
+});
+function del(target){
+	var link = "/customer-management/CustomerServlet/" + target.id;
+	var name = $("#" + target.id).parent().parent().children().html();
+	var cf = confirm("Are you sure you want to delete customer " + name);
+	if (cf == true){
+		$.ajax({
+	        url: link,
+	        type: "DELETE",
+	        success: function(result){
+	            if (result.status = "ok"){
+	                alert("Customer has been deleted.");
+	                $("#" + target.id).parent().parent().remove();
+	            }
+	        }
+	    });
+	}
+}
+</script>
+</head>
+<body>
+<h3 align="center" >Customer List</h3>
+    <table border="1" width="70%" align="center">
+        <tr>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </table>
+    
+</body>
+</html>
